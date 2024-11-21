@@ -16,60 +16,18 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import React, { useState } from "react";
+import columns from "./columns";
 
 const DataTable = () => {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
-  //   const columns = [
-  //     {
-  //       id: "name",
-  //       accessorKey: "name",
-  //       header: "Name",
-  //     },
-  //     {
-  //       id: "email",
-  //       accessorKey: "email",
-  //       header: "Email",
-  //     },
-  //     {
-  //       id: "major",
-  //       accessorKey: "major",
-  //       header: "Major",
-  //     },
-  //   ];
-  const columns = [
-    {
-      id: "title",
-      accessorKey: "title",
-      header: "Title",
-    },
-    {
-      id: "price",
-      accessorKey: "price",
-      header: "Price",
-    },
-  ];
-  const st_data = [
-    { id: 1, name: "kms", email: "eduj@gmail.com", major: "eng" },
-    { id: 2, name: "kms", email: "eduj@gmail.com", major: "eng" },
-    { id: 3, name: "kms", email: "eduj@gmail.com", major: "eng" },
-  ];
 
-  //   const fetchAllStudents = async () => {
-  //     const res = await fetch("https://st-api.kaungmyatsoe.dev/api/v1/students", {
-  //       method: "GET",
-  //       headers: {
-  //         key:
-  //           "43/UgWoJWW8pXKRmM48xYp8uuIXXLaBM1USAblj50X5GrVUdaluW36lEjoAbylSL 6m4g9OXOxb9p7teXUyph5w==",
-  //       },
-  //     });
-  //     const data = await res.json();
-  //     console.log(data);
-
-  //     return data.students;
-  //   };
-  const fetchProducts = async () => {
-    const res = await fetch("https://dummyjson.com/products", {
+  const fetchAllStudents = async () => {
+    const res = await fetch("https://st-api.kaungmyatsoe.dev/api/v1/students", {
       method: "GET",
+      headers: {
+        key:
+          "43/UgWoJWW8pXKRmM48xYp8uuIXXLaBM1USAblj50X5GrVUdaluW36lEjoAbylSL6m4g9OXOxb9p7teXUyph5w",
+      },
     });
     const data = await res.json();
     console.log(data);
@@ -78,12 +36,13 @@ const DataTable = () => {
   };
 
   const { data, isLoading } = useQuery({
-    queryKey: ["products"],
-    queryFn: fetchProducts,
+    queryKey: ["students"],
+    queryFn: fetchAllStudents,
+    refetchOnWindowFocus: false,
   });
 
   const table = useReactTable({
-    data: !isLoading ? data.products : [],
+    data: !isLoading ? data.students : [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -96,7 +55,7 @@ const DataTable = () => {
   console.log(pagination);
 
   return (
-    <div className="container mx-auto ">
+    <>
       <div className="border my-5">
         <Table>
           <TableHeader>
@@ -167,7 +126,7 @@ const DataTable = () => {
           </span>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
